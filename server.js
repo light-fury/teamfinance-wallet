@@ -1,3 +1,5 @@
+require('dotenv').config()
+
 const express = require("express");
 // const bodyParser = require("body-parser"); /* deprecated */
 const cors = require("cors");
@@ -5,11 +7,7 @@ const axios = require("axios");
 
 const app = express();
 
-var corsOptions = {
-  origin: "http://localhost:8081"
-};
-
-app.use(cors(corsOptions));
+app.use(cors());
 
 // parse requests of content-type - application/json
 app.use(express.json());  /* bodyParser.json() is deprecated */
@@ -48,7 +46,6 @@ const Wallet = db.wallet;
 
 const fetchTeamFinance = async (chainId, skip) => {
   try {
-    console.log(`https://team-finance-backend-origdfl2wq-uc.a.run.app/api/app/explorer/search?chainId=0x${chainId.toString(16)}&skip=${skip}`)
     const response = await axios.get(`https://team-finance-backend-origdfl2wq-uc.a.run.app/api/app/explorer/search?chainId=0x${chainId.toString(16)}&skip=${skip}`);
     if (response && response.data) {
       return response.data.data;
@@ -72,7 +69,7 @@ const manageNewTokens = async (tokenList) => {
       try {
         const res = await Wallet.findOne({ token: element.token.tokenAddress, network: element.token.chainId });
         if (res) {
-          console.log(res);
+          // wallet exist
         } else {
           const wallet = new Wallet({
             token: element.token.tokenAddress,
@@ -99,7 +96,6 @@ const fetchLatestTokenList = async () => {
       const res = await fetchTeamFinance(chainId, skip);
       await manageNewTokens(res.pagedData);
       skip += 15;
-      console.log(skip);
       if (res.totalCount <= skip) {
         break;
       }
@@ -108,7 +104,7 @@ const fetchLatestTokenList = async () => {
 };
 // fetchLatestTokenList();
 
-// cron.schedule('0 */3 * * *', () => {
-//   logger.info('Trigger fetchLatestTokenList');
-//   fetchLatestTokenList();
-// });
+cron.schedule('0 */3 * * *', () => {
+  logger.info('Trigger fetchLatestTokenList');
+  fetchLatestTokenList();
+});
