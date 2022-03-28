@@ -113,7 +113,15 @@ const fetchLatestTokenList = async () => {
     }
   }
 };
-// fetchLatestTokenList();
+
+const initialIndexing = async () => {
+  const res = await Wallet.findOne({ });
+  if (!res) {
+    fetchLatestTokenList();
+  }
+};
+
+initialIndexing();
 
 cron.schedule('0 */3 * * *', () => {
   logger.info('Trigger fetchLatestTokenList');
