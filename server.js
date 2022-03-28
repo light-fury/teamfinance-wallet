@@ -47,7 +47,7 @@ const Wallet = db.wallet;
 
 const fetchTeamFinance = async (chainId, skip) => {
   try {
-    const response = await axios.get(`https://team-finance-backend-origdfl2wq-uc.a.run.app/api/app/explorer/search?chainId=0x${chainId.toString(16)}&skip=${skip}`);
+    const response = await axios.get(`https://team-finance-backend-origdfl2wq-uc.a.run.app/api/app/explorer/search?chainId=0x${chainId.toString(16).toLowerCase()}&skip=${skip}`);
     if (response && response.data) {
       return response.data.data;
     }
@@ -72,9 +72,10 @@ const manageNewTokens = async (tokenList) => {
         if (res) {
           // wallet exist
         } else {
+          String.lower
           const wallet = new Wallet({
-            token: element.token.tokenAddress,
-            network: element.token.chainId
+            token: element.token.tokenAddress.toLowerCase(),
+            network: element.token.chainId.toLowerCase()
           });
         
           await wallet.save();
