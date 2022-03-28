@@ -68,7 +68,7 @@ const manageNewTokens = async (tokenList) => {
         continue;
       }
       try {
-        const res = await Wallet.findOne({ token: element.token.tokenAddress, network: element.token.chainId });
+        const res = await Wallet.findOne({ token: element.token.tokenAddress.toLowerCase(), network: element.token.chainId.toLowerCase() });
         if (res) {
           // wallet exist
         } else {
