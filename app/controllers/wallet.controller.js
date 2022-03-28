@@ -5,7 +5,7 @@ const Wallet = db.wallet;
 exports.findByNetwork = (req, res) => {
   const network = req.query.network;
 
-  Wallet.find({ network: network.toLowerCase() })
+  Wallet.find({ network: network.toLowerCase(), blacklist: false })
     .then(data => {
       res.send(data);
     })

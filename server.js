@@ -75,7 +75,8 @@ const manageNewTokens = async (tokenList) => {
           String.lower
           const wallet = new Wallet({
             token: element.token.tokenAddress.toLowerCase(),
-            network: element.token.chainId.toLowerCase()
+            network: element.token.chainId.toLowerCase(),
+            blacklist: false
           });
         
           await wallet.save();

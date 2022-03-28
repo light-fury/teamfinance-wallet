@@ -3,6 +3,7 @@ module.exports = mongoose => {
     {
       token: { type: String },
       network: { type: String },
+      blacklist: { type: Boolean, default: false },
     },
     { timestamps: true }
   );
