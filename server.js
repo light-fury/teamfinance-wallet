@@ -90,7 +90,16 @@ const manageNewTokens = async (tokenList) => {
 };
 
 const fetchLatestTokenList = async () => {
-  let chains = [0x1, 0x38];
+  let chains = [
+    1,
+    56,
+    43114,
+    1029,
+    137,
+    25,
+    128,
+    106
+  ];
   for (let index = 0; index < chains.length; index++) {
     const chainId = chains[index];
     let skip = 0;
